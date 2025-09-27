@@ -1,3 +1,6 @@
+const asyncHandler = require("express-async-handler");
+const Todo = require("../models/todosModel");
+
 // @desc Get all todos
 // GET /api/todos
 // public
@@ -9,12 +12,21 @@ const getTodos = (req, res) => {
 // POST /api/todos
 // public
 
-const CreateTodo = (req, res) => {
-  console.log(req.body);
+const CreateTodo = asyncHandler(async (req, res) => {
+  const { title, description } = req.body;
 
-  res.status(201).json({ message: "Create a todo" });
-};
+  if (!title || !description) {
+    res.status(400);
+    throw new Error(`All Field are mandatory`);
+  }
 
+  const todo = await Todo.create({
+    title,
+    description,
+  });
+
+  res.status(201).json(todo);
+});
 // @desc Get a todo
 // GET /api/todos/:id
 // public
