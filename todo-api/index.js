@@ -10,6 +10,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/api/todos", require("./routers/todosRouter"));
+app.use("/api/users", require("./routers/userRouter"));
 app.use(errorHandler);
 
 app.listen(port, () => {
