@@ -1,6 +1,7 @@
 const express = require("express");
 const errorHandler = require("./middlewares/errorHandler");
 const connctDb = require("./config/dbConnection");
+const { authenticateToken } = require("./middlewares/auth");
 require("dotenv").config();
 const port = process.env.PORT || 5001;
 
@@ -9,7 +10,7 @@ connctDb();
 const app = express();
 app.use(express.json());
 
-app.use("/api/todos", require("./routers/todosRouter"));
+app.use("/api/todos", authenticateToken, require("./routers/todosRouter"));
 app.use("/api/users", require("./routers/userRouter"));
 app.use(errorHandler);
 
